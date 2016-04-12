@@ -1,0 +1,11 @@
+<%=
+  button_to mr_mime.impersonation_url, {
+    class: local_assigns[:button_class],
+    form_class: 'mr-mime-new-impersonation',
+    params: {
+      impersonation: { impersonated_id: user_id }
+    }
+  } do
+    local_assigns[:button_text] || 'Impersonate User'
+  end
+%>

@@ -1,0 +1,16 @@
+.mr-mime-impersonation-footer {
+  padding-top: 25px;
+  font-size: 20px;
+  position: fixed;
+  height: 75px;
+  bottom: 0px;
+  background-color: #fbefd9;
+  width: 100%;
+  z-index: 10;
+  text-align: center;
+  border-top: 3px solid #4a4a4a;
+}
+
+.mr-mime-new-impersonation {
+  display: inline-block;
+}
