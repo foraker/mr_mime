@@ -12,4 +12,16 @@ MrMime.configure do |config|
   # If the method returns truthy, the user will be permitted to impersonate
   # Default: nil
   # config.user_permission_check = :admin?
+
+  # Configure the URL that users will be redirected to after beginning impersonation.
+  # Accepts the following formats (with examples):
+  #
+  # -- String: A literal URL string
+  # config.after_impersonation_url = '/'
+  #
+  # -- Proc/Lambda: Must return the desired URL. The impersonated user will be passed in.
+  # config.after_impersonation_url = Proc.new { |impersonated| user_url(impersonated) }
+  #
+  # -- Symbol: The name of a URL helper method within your application
+  config.after_impersonation_url = :root_url
 end

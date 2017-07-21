@@ -3,6 +3,7 @@ require 'models/mr_mime/store'
 require 'models/mr_mime/adapters/base'
 require 'models/mr_mime/impersonation_policy'
 require 'models/mr_mime/impersonation'
+require 'models/mr_mime/url_resolver'
 require 'helpers/mr_mime/impersonation_helper'
 require 'controllers/mr_mime/impersonation_behavior'
 require 'controllers/mr_mime/application_controller'
@@ -17,6 +18,7 @@ module MrMime
   end
 
   RSpec.describe ImpersonationsController, type: :controller do
+    let(:main_app) { double(root_url: 'root_url', test_url: 'test') }
     let(:request) { double(referer: 'test_url') }
     let(:session) { { current_user_id: 1 } }
     let(:controller) { described_class.new }
@@ -48,8 +50,26 @@ module MrMime
           expect(session['mr_mime.return_to']).to eq 'test_url'
         end
 
-        it 'redirects to the root_url' do
+        it 'redirects to the root_url if no after_impersonation_url is set' do
           expect(controller).to receive(:redirect_to).with('root_url', anything)
+          controller.create
+        end
+
+        it 'redirects to the correct after_impersonation_url if string' do
+          MrMime::Config.after_impersonation_url = 'string_url'
+          expect(controller).to receive(:redirect_to).with('string_url', anything)
+          controller.create
+        end
+
+        it 'redirects to the correct after_impersonation_url if symbol' do
+          MrMime::Config.after_impersonation_url = :test_url
+          expect(controller).to receive(:redirect_to).with('test', anything)
+          controller.create
+        end
+
+        it 'redirects to the correct after_impersonation_url if proc' do
+          MrMime::Config.after_impersonation_url = Proc.new { |user| "users/#{user.id}" }
+          expect(controller).to receive(:redirect_to).with('users/2', anything)
           controller.create
         end
       end
@@ -112,7 +132,7 @@ module MrMime
 
     def stub_config
       allow(DummyUser).to receive(:find_by) { |options| find_user(options) }
-      allow(Config).to receive_messages(
+      allow(MrMime::Config).to receive_messages(
         user_class: DummyUser,
         adapter_class: DummyAdapter
       )
@@ -124,7 +144,7 @@ module MrMime
       end
 
       allow(controller).to receive_messages(
-        main_app: double(root_url: 'root_url'),
+        main_app: main_app,
         request: request,
         session: session,
         redirect_to: nil

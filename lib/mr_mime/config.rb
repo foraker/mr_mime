@@ -9,6 +9,9 @@ module MrMime
     mattr_accessor :user_permission_check
     @@user_permission_check = nil
 
+    mattr_accessor :after_impersonation_url
+    @@after_impersonation_url = :root_url
+
     def self.adapters
       {
         sorcery: MrMime::Adapters::SorceryAdapter,

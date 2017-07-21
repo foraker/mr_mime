@@ -4,7 +4,7 @@ module MrMime
 
     def create
       if impersonation.save
-        redirect_to main_app.root_url, notice: 'Impersonation started'
+        redirect_to after_impersonation_url, notice: 'Impersonation started'
       else
         redirect_to :back, flash: { error: impersonation.error_messages }
       end
@@ -44,6 +44,15 @@ module MrMime
           error: 'You do not have permission to do this'
         }
       end
+    end
+
+    def after_impersonation_url
+      MrMime::UrlResolver.resolve(
+        MrMime::Config.after_impersonation_url,
+        context: self,
+        args: current_user,
+        default: main_app.root_url
+      )
     end
   end
 end
