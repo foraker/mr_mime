@@ -1,6 +1,6 @@
 module MrMime
   class ImpersonationsController < MrMime::ApplicationController
-    before_filter :require_login
+    before_action :require_login
 
     def create
       if impersonation.save
