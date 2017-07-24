@@ -13,7 +13,7 @@ module MrMime
     def destroy
       impersonation.revert
 
-      redirect_to impersonation.return_to, notice: 'Impersonation ended'
+      redirect_to return_to_url, notice: 'Impersonation ended'
     end
 
     private
@@ -53,6 +53,10 @@ module MrMime
         args: current_user,
         default: main_app.root_url
       )
+    end
+
+    def return_to_url
+      impersonation.return_to || main_app.root_url
     end
   end
 end

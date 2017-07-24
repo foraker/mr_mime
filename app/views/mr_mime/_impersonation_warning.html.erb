@@ -1,6 +1,6 @@
 <% if impersonator? %>
   <div class='mr-mime-impersonation-footer'>
-    You are impersonating <strong><%= current_user.email %></strong>. At any time you may
+    You are impersonating <strong><%= impersonated_email %></strong>. At any time you may
     <%= link_to 'return to your regular account', mr_mime.impersonation_path, method: :delete %>.
   </div>
 <% end %>
