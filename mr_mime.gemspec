@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'mr_mime'
-  s.version     = '0.0.3'
-  s.date        = '2016-04-12'
+  s.version     = '0.0.4'
+  s.date        = '2017-07-24'
   s.authors     = ['Kyle Edson']
   s.email       = 'rubygems@foraker.com'
   s.files       = `git ls-files`.split($/)
